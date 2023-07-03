@@ -7,42 +7,41 @@ import List from '../List/index';
 export default class App extends Component {
   movieServices = new MovieServices();
   state = {
-    data: null,
+    obj: null,
+    genre: [],
   };
 
   constructor() {
     super();
-    this.getArr();
+    this.getArrMoviesPop();
+    this.getArrMoviesGenre();
   }
-  getArr() {
-    this.movieServices
-      .getPopylatiry(1)
-      // .getI()
-      .then((arr) => {
-        this.setState({
-          data: arr,
-        });
+  getArrMoviesPop() {
+    this.movieServices.getPopylatiry(1).then((arr) => {
+      this.setState({
+        obj: arr,
       });
+    });
   }
-  //   componentDidMount() {
-  //     this.MovieServices.getPopylatiry(1)
-  //       // .getI()
-  //       .then((arr) => {
-  //         this.setState({
-  //           data: arr,
-  //         });
-  //       });
-  //   }
+
+  getArrMoviesGenre() {
+    this.movieServices.getGenre(1).then((arr) => {
+      this.setState({
+        genre: arr,
+      });
+    });
+  }
   render() {
-    console.log(this.state.data);
-    if (this.state.data != null) {
+    console.log(this.state.genre);
+    console.log(this.state.obj);
+    if (this.state.obj != null && this.state.genre.length != 0) {
       return (
         <div className="app">
           <div className="tabs-header"></div>
           <form onSubmit={this.onSubmit}>
             <input className="new-todo" placeholder="Type to search..."></input>
           </form>
-          <List arr={this.state.data}></List>
+          <List setOverview={this.setOverview} arrObj={this.state.obj} arrGenre={this.state.genre}></List>
         </div>
       );
     }
