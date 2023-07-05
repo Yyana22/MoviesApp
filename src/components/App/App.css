@@ -18,3 +18,22 @@ form input {
 	min-height: 100%;
 	font-size: 16px;
 }
+
+
+.load-app {
+	margin-top: 40vh;
+}
+
+.load-error-wrap{
+	display: flex;
+	flex-direction: column;
+	margin-left: 25vh;
+}
+
+.error-app{
+	margin-top: 20px;
+}
+
+.pagination-app{
+	margin-left: 30%;
+}
