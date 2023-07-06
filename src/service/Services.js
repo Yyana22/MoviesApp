@@ -19,7 +19,11 @@ export default class MovieServices {
       console.log(error);
     }
   }
-
+  async getMovies(search = '', page = 1) {
+    return await this.getInfo(
+      `/search/movie?api_key=${this.API_KEY}&language=en-US&query=${search}&page=${page}&include_adult=false`
+    );
+  }
   async getGenre() {
     try {
       return await this.getInfo(`${this.apiBase}genre/movie/list?api_key=${apiKey}&language=en-US`);

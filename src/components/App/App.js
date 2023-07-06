@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import { Pagination } from 'antd';
+// import { debounce } from 'lodash';
 
 import MovieServices from '../../service/Services';
 import List from '../List/index';
@@ -15,24 +16,47 @@ export default class App extends Component {
     loading: false,
     page: 1,
     totalPages: 0,
+    inputVal: '',
   };
 
   componentDidMount() {
-    this.movieServices.getPopylatiry(this.state.page).then((res) => {
-      this.setState({ totalPages: res.total_pages });
-    }); //totalPages
-    this.getArrMoviesPop(); //first moviesList
-    //  this.getArrMoviesGenre(); //first genresList
+    this.getArrMoviesPop();
   }
-  componentDidUpdate() {
-    this.getArrMoviesPop(); //update moviesList
-    //  this.getArrMoviesGenre(); //update genresList
+  componentDidUpdate(prevProps, prevState) {
+    const { page, totalPages, obj } = this.state;
+    if (prevState.page !== page || prevState.totalPages !== totalPages || prevState.obj !== obj) {
+      this.movieServices.getPopylatiry(page).then((res) => {
+        this.setState({ obj: res, totalPages: res.total_pages });
+      });
+    }
   }
+
+  //   log(arr) {
+  //     this.setState({ obj: arr, totalPages: arr.total_pages });
+  //   }
+  //   componentDidUpdate(preмProps, props) {
+  //     if (prewProps != props) {
+  //       console.log(prewProps.page, props.page);
+  //       // this.getArrMoviesPop();
+  //       this.movieServices.getPopylatiry(this.state.page).then((arr) => {
+  //         if (arr.total_pages > 10000) {
+  //           this.setState({ totalPages: 10000, obj: arr });
+  //         } else {
+  //           this.setState({ totalPages: arr.total_pages, obj: arr });
+  //         }
+  //       });
+  //     }
+  //     // this.getArrMoviesPop(); //update moviesList
+  //     //  this.getArrMoviesGenre(); //update genresList
+  //   }
   getArrMoviesPop() {
     this.movieServices.getPopylatiry(this.state.page).then((arr) => {
-      this.setState({
-        obj: arr,
-      });
+      this.setState({ obj: arr });
+      if (arr.total_pages > 10000) {
+        this.setState({ totalPages: 10000, obj: arr });
+      } else {
+        this.setState({ totalPages: arr.total_pages, obj: arr });
+      }
     });
   }
   //   getArrMoviesGenre() {
@@ -44,6 +68,7 @@ export default class App extends Component {
   //   }
 
   changePage = (val) => {
+    console.log(this.state.page);
     this.setState((state) => {
       state.page = val;
     });
@@ -58,13 +83,24 @@ export default class App extends Component {
       return overview;
     }
   }
+
+  //   changeInput = (e) => {
+  //     this.setState({
+  //       inputVal: e.target.value,
+  //     });
+  //   };
   render() {
-    if (this.state.obj != null && this.state.genre.length != 0) {
+    if (this.state.obj != null) {
       return (
         <div className="app">
           <div className="tabs-header"></div>
           <form onSubmit={this.onSubmit}>
-            <input className="new-todo" placeholder="Type to search..."></input>
+            <input
+              onChange={this.changeInput}
+              className="search"
+              placeholder="Type to search..."
+              value={this.state.inputVal}
+            ></input>
           </form>
           <List setOverview={this.setOverview} arrObj={this.state.obj} arrGenre={this.state.genre}></List>
           <Pagination
