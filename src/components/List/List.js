@@ -9,22 +9,21 @@ export default class List extends Component {
     genreEl: [],
   };
   render() {
-    let elements = this.props.arrObj.results.map((item) => {
-      // const { overview, ...itemProps } = item;
-      // let genresForItem = item.genre_ids;
-      // let nameGenres = genresForItem.filter((item) => {
-      //   if (item === this.props.arrGenre.id) {
-      //     return this.props.arrGenre.name;
-      //   }
-      // });
-      this.id += 1;
-      return (
-        <li key={this.id}>
-          {/* <Item setOverview={this.props.setOverview} info={item} nameGenres={nameGenres}></Item> */}
-          <Item setOverview={this.props.setOverview} info={item}></Item>
-        </li>
-      );
-    });
-    return <ul className="list-item">{elements}</ul>;
+    if (this.props.arrObj) {
+      let elements = this.props.arrObj.results.map((item) => {
+        this.id += 1;
+        return (
+          <li key={this.id}>
+            <Item
+              setOverview={this.props.setOverview}
+              info={item}
+              addMovieRating={this.props.addMovieRating}
+              deleteMovieRating={this.props.deleteMovieRating}
+            ></Item>
+          </li>
+        );
+      });
+      return <ul className="list-item">{elements}</ul>;
+    } else return null;
   }
 }

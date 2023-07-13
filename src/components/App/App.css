@@ -1,39 +1,60 @@
+
 * {
 	font-family: 'Inter', sans-serif;
-}
-html,
-body {
+ }
+ html,
+ body {
 	display: flex;
 	margin: 0 auto;
 	padding: 0;
-}
-
-form {
-	width: 938px;
+ }
+ 
+ form {
+	width: 1097px;
 	height: 40px;
-}
-
-form input {
+ }
+ 
+ form input {
 	min-width: 100%;
 	min-height: 100%;
 	font-size: 16px;
-}
-
-
-.load-app {
+ }
+ 
+ 
+ .load-app {
 	margin-top: 40vh;
-}
-
-.load-error-wrap{
+ }
+ 
+ .load-error-wrap{
 	display: flex;
 	flex-direction: column;
 	margin-left: 25vh;
-}
-
-.error-app{
+ }
+ 
+ .error-app{
 	margin-top: 20px;
-}
-
-.pagination-app{
+ }
+ 
+ .pagination-app{
 	margin-left: 30%;
-}
+ }
+ 
+ .tabs-header{
+	display: flex;
+	justify-content: center;
+	margin: 40px auto;
+ }
+ 
+ .tabs-header button {
+	font-size: 14px;
+	background-color: #ffff;
+	border: none;
+	margin-left: 16px;
+	padding: 11px;
+	cursor: pointer;
+ }
+ 
+ .tabs-header button.active-btn {
+	color: #1890FF;
+	border-bottom: 2px solid #1890FF;
+ }
