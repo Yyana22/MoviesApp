@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Rate } from 'antd';
+import { format } from 'date-fns';
 
 import './Item.css';
 import GenreList from '../GenreList/GenreList';
@@ -22,7 +23,6 @@ export default class Item extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    console.log(localStorage);
     const { value } = this.state;
     if (prevState.value !== value) {
       if (value !== 0) {
@@ -46,8 +46,7 @@ export default class Item extends Component {
   };
   genreId = 10;
   render() {
-    const { genre_ids, rating, vote_average, poster_path, title, popularity, release_date, overview, id } =
-      this.props.info;
+    const { genre_ids, rating, vote_average, poster_path, title, release_date, overview, id } = this.props.info;
     let color;
     if (vote_average > 0 && vote_average < 3) {
       color = '#E90000';
@@ -58,15 +57,15 @@ export default class Item extends Component {
     } else {
       color = '#66E900';
     }
+    const newDate = new Date(release_date);
     return (
       <div className="item-wrap">
         <img src={`https://image.tmdb.org/t/p/w500${poster_path}`} />
         <div className="text-wrap">
           <div className="header-card">
             <h3 className="title">{title}</h3>
-            <div className="reiting">{popularity}</div>
           </div>
-          <div className="release-date">{release_date}</div>
+          <div className="release-date">{format(newDate, 'MMM dd, yyyy')}</div>
           <div className="genres">
             <GenreList arrGenreId={genre_ids} />
           </div>
