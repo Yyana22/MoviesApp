@@ -44,6 +44,15 @@ export default class Item extends Component {
       return 0;
     }
   };
+
+  releaseDate(release_date) {
+    if (!release_date) {
+      return 'Date not found';
+    } else {
+      const newDate = new Date(release_date);
+      return format(newDate, 'MMM dd, yyyy');
+    }
+  }
   genreId = 10;
   render() {
     const { genre_ids, rating, vote_average, poster_path, title, release_date, overview, id } = this.props.info;
@@ -57,17 +66,17 @@ export default class Item extends Component {
     } else {
       color = '#66E900';
     }
-    const newDate = new Date(release_date);
+
     return (
       <div className="item-wrap">
         <img src={`https://image.tmdb.org/t/p/w500${poster_path}`} />
         <div className="text-wrap">
           <div className="header-card">
-            <h3 className="title">{title}</h3>
+            <h3 className="title">{title ? title : 'Not found'}</h3>
           </div>
-          <div className="release-date">{format(newDate, 'MMM dd, yyyy')}</div>
+          <div className="release-date">{this.releaseDate(release_date)}</div>
           <div className="genres">
-            <GenreList arrGenreId={genre_ids} />
+            <GenreList arrGenreId={genre_ids ? genre_ids : 'Not found'} />
           </div>
           <p className="overview">{this.props.setOverview(overview)}</p>
           <Rate
@@ -78,7 +87,6 @@ export default class Item extends Component {
             defaultValue={this.state.value}
             onChange={this.onChange}
             value={this.getStars(rating, id)}
-            // value={rating ? rating : this.state.value}
           />
         </div>
         <div className={'rating'} style={{ borderColor: color }}>
