@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import Item from '../Item/index';
 import './List.css';
 export default class List extends Component {
-  id = 100;
   state = {
     elements: [],
     genreEl: [],
@@ -11,9 +10,8 @@ export default class List extends Component {
   render() {
     if (this.props.arrObj) {
       let elements = this.props.arrObj.results.map((item) => {
-        this.id += 1;
         return (
-          <li key={this.id}>
+          <li key={item.id}>
             <Item
               setOverview={this.props.setOverview}
               info={item}
@@ -24,6 +22,7 @@ export default class List extends Component {
         );
       });
       return <ul className="list-item">{elements}</ul>;
-    } else return null;
+    }
+    return null;
   }
 }

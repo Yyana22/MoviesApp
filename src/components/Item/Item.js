@@ -26,10 +26,9 @@ export default class Item extends Component {
     const { value } = this.state;
     if (prevState.value !== value) {
       if (value !== 0) {
-        this.props.addMovieRating(this.props.info.id, value);
-      } else {
-        this.props.deleteMovieRating(this.props.info.id, value);
+        return this.props.addMovieRating(this.props.info.id, value);
       }
+      return this.props.deleteMovieRating(this.props.info.id, value);
     }
   }
   getStars = (rating, id) => {
@@ -48,24 +47,24 @@ export default class Item extends Component {
   releaseDate(release_date) {
     if (!release_date) {
       return 'Date not found';
-    } else {
-      const newDate = new Date(release_date);
-      return format(newDate, 'MMM dd, yyyy');
     }
+    const newDate = new Date(release_date);
+    return format(newDate, 'MMM dd, yyyy');
   }
   genreId = 10;
+
+  returnColor(rating) {
+    if (rating > 0 && rating < 3) {
+      return '#E90000';
+    } else if (rating > 3 && rating < 5) {
+      return '#E97E00';
+    } else if (rating > 5 && rating < 7) {
+      return '#E9D100';
+    }
+    return '#66E900';
+  }
   render() {
     const { genre_ids, rating, vote_average, poster_path, title, release_date, overview, id } = this.props.info;
-    let color;
-    if (vote_average > 0 && vote_average < 3) {
-      color = '#E90000';
-    } else if (vote_average > 3 && vote_average < 5) {
-      color = '#E97E00';
-    } else if (vote_average > 5 && vote_average < 7) {
-      color = '#E9D100';
-    } else {
-      color = '#66E900';
-    }
 
     return (
       <div className="item-wrap">
@@ -89,7 +88,7 @@ export default class Item extends Component {
             value={this.getStars(rating, id)}
           />
         </div>
-        <div className={'rating'} style={{ borderColor: color }}>
+        <div className={'rating'} style={{ borderColor: this.returnColor(vote_average) }}>
           {vote_average}
         </div>
       </div>

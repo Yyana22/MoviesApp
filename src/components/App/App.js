@@ -36,15 +36,15 @@ export default class App extends Component {
   componentDidUpdate(prevProps, prevState) {
     const { page, valInput } = this.state;
     if (prevState.page !== page) {
-      this.movieServices.getPopylatiry(page).then((res) => {
+      return this.movieServices.getPopylatiry(page).then((res) => {
         if (res.total_pages > 10000) {
-          this.setState({ totalPages: 10000, obj: res });
-        } else {
-          this.setState({ totalPages: res.total_pages, obj: res });
+          return this.setState({ totalPages: 10000, obj: res });
         }
+        return this.setState({ totalPages: res.total_pages, obj: res });
       });
-    } else if (prevState.valInput !== valInput) {
-      this.movieServices.getMoviesSearch(valInput, page).then((res) => {
+    }
+    if (prevState.valInput !== valInput) {
+      return this.movieServices.getMoviesSearch(valInput, page).then((res) => {
         this.setState({ totalPages: res.total_pages, obj: res });
       });
     }
@@ -61,12 +61,11 @@ export default class App extends Component {
     if (localStorage.getItem('movieRating') === null) {
       const obj = {};
       obj[id] = rating;
-      localStorage.setItem('movieRating', JSON.stringify(obj));
-    } else {
-      const obj = JSON.parse(localStorage.getItem('movieRating'));
-      obj[id] = rating;
-      localStorage.setItem('movieRating', JSON.stringify(obj));
+      return localStorage.setItem('movieRating', JSON.stringify(obj));
     }
+    const obj = JSON.parse(localStorage.getItem('movieRating'));
+    obj[id] = rating;
+    return localStorage.setItem('movieRating', JSON.stringify(obj));
   };
   deleteMovieRating = (id) => {
     this.movieServices.deleteMovieRating(id, this.state.guestSession);
@@ -93,10 +92,9 @@ export default class App extends Component {
 
   onChangeTabs = (e) => {
     if (e.target.innerHTML === 'Rated') {
-      this.setState({ tabPage: 'Rated' });
-    } else {
-      this.setState({ tabPage: 'Search' });
+      return this.setState({ tabPage: 'Rated' });
     }
+    return this.setState({ tabPage: 'Search' });
   };
   changeInput = debounce((e) => {
     this.setState({ valInput: e.target.value });
@@ -108,9 +106,8 @@ export default class App extends Component {
     } else if (overview.length > 150) {
       let stopText = overview.indexOf(' ', 150);
       return overview.slice(0, stopText) + '...';
-    } else {
-      return overview;
     }
+    return overview;
   }
   render() {
     const form =
@@ -151,9 +148,8 @@ export default class App extends Component {
           </GenresProvider>
         </div>
       );
-    } else {
-      return <PreviewApp />;
     }
+    return <PreviewApp />;
   }
 }
 
